@@ -1,0 +1,23 @@
+{
+    "runtime": "NetCore31",
+    "documentGenerator": {
+        "aspNetCoreToOpenApi": {
+            "project": "../../Apis/Nswag/WeatherForecastApi/Kaylumah.GenerateCSharpClientForOpenAPI.Apis.Nswag.WeatherForecastApi.csproj"
+        }
+    },
+    "codeGenerators": {
+        "openApiToCSharpClient": {
+            "generateClientInterfaces": true,
+            "exceptionClass": "$(SdkName)ApiException",
+            "useBaseUrl": true,
+            "generateBaseUrlProperty": true,
+            "generateContractsOutput": true,
+            "contractsNamespace": "$(SdkNamespace).Interface",
+            "contractsOutputFilePath": "$(GeneratedContractFile)",
+            "className": "$(SdkName)Client",
+            "operationGenerationMode": "SingleClientFromOperationId",
+            "namespace": "$(SdkNamespace).Service",
+            "output": "$(GeneratedClientFile)"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "runtime": "NetCore31",
+    "defaultVariables": "Configuration=Debug",
+    "documentGenerator": {
+        "fromDocument": {
+            "json": "swagger.json"
+        }
+    },
+    "codeGenerators": {
+        "openApiToCSharpClient": {
+            "output": "Client.g.cs"
+        }
+    }
+}

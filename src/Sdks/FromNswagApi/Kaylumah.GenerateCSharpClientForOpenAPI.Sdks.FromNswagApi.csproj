@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.11.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <Target Name="GenerateSdk" BeforeTargets="Build">
+    <PropertyGroup>
+      <NSwagConfiguration>nswag.json</NSwagConfiguration>
+
+      <SdkNamespace>$(RootNamespace)</SdkNamespace>
+      <SdkName>Weather</SdkName>
+      <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+      <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+    </PropertyGroup>
+    <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+    <Exec Command="$(NSwagExe_Core31) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+
+  </Target>
+
+</Project>

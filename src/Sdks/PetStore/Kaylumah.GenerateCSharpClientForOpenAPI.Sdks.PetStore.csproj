@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.11.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <!-- <Target Name="NSwag" BeforeTargets="PrepareForBuild">
+  <Target Name="NSwag" AfterTargets="Build">
+  <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' "> -->
+  <Target Name="GenerateSdk" BeforeTargets="Build">
+    <!-- Generate the default configuration -->
+    <!-- <Exec Command="$(NSwagExe_Core31) new" /> -->
+
+    <!-- Without passing config -->
+    <!-- <Exec Command="$(NSwagExe_Core31) run nswag.json " /> -->
+
+    <PropertyGroup>
+      <OpenAPIDocument>swagger.json</OpenAPIDocument>
+      <NSwagConfiguration>nswag.json</NSwagConfiguration>
+
+      <SdkNamespace>$(RootNamespace)</SdkNamespace>
+      <SdkName>PetStore</SdkName>
+      <GeneratedInterfaceFile>$(SdkName).Interface.g.cs</GeneratedInterfaceFile>
+      <GeneratedServiceFile>$(SdkName).Service.g.cs</GeneratedServiceFile>
+
+    </PropertyGroup>
+    <Error Text="The OpenAPI document '$(OpenAPIDocument)' does not exists!" Condition="!Exists('$(OpenAPIDocument)')" />
+    <Error Text="The NSwag configuration '$(NSwagConfiguration)' does not exists!" Condition="!Exists('$(NSwagConfiguration)')" />
+    <Exec Command="$(NSwagExe_Core31) run $(NSwagConfiguration) /variables:Configuration=$(Configuration),InputDocument=$(OpenAPIDocument),SdkName=$(SdkName),SdkNamespace=$(SdkNamespace),GeneratedClientFile=$(GeneratedServiceFile),GeneratedContractFile=$(GeneratedInterfaceFile)" />
+
+  </Target>
+
+</Project>
